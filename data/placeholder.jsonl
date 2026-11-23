@@ -1,0 +1,8 @@
+{"id": "ph-01", "input": "Capital do Brasil?", "expected": "Brasília", "metadata": {"origin": "placeholder"}}
+{"id": "ph-02", "input": "Quanto é 2 + 2?", "expected": "4"}
+{"id": "ph-03", "input": "Cor do céu sem nuvens, em uma palavra.", "expected": "azul"}
+{"id": "ph-04", "input": "Um triângulo tem três lados? Responda sim ou não.", "expected": "sim"}
+{"id": "ph-05", "input": "Primeira letra do alfabeto latino.", "expected": "A"}
+{"id": "ph-06", "input": "Quantos dias tem uma semana?", "expected": "7"}
+{"id": "ph-07", "input": "Tradução de cat para português.", "expected": "gato"}
+{"id": "ph-08", "input": "Fórmula química da água.", "expected": "H2O"}
