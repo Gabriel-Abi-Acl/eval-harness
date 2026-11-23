@@ -2,7 +2,7 @@
 
 Harness pequeno para avaliar sistemas com LLM fora de um estudo específico. A ideia é reaproveitar o que os estudos ad hoc (`rag-study`, `llm-benchmark`, `guardrails-study` e outros) montavam cada vez: dataset rotulado, sistema sob teste, métrica e um registro reproduzível da execução.
 
-Este repositório ainda não tem resultado experimental. O que está aqui é o núcleo offline, três conjuntos sintéticos e os testes deles.
+Este repositório ainda não tem resultado experimental. O que está aqui é o núcleo offline, três conjuntos sintéticos, o CLI de relatório e os testes deles. Números de sistema fake verificam o encanamento. Não são achado experimental.
 
 ## Objetivo
 
@@ -26,11 +26,13 @@ O repositório contém:
 - interface `Judge` / `JudgeMetric`, sem chamada de rede;
 - runner e `RunManifest`;
 - adaptador OpenAI importado só na primeira chamada, extra opcional;
+- CLI `eval-harness run` e `eval-harness compare` (`python -m eval_harness` faz o mesmo);
+- `records.jsonl`, `summary.json` e `report.md` num diretório ignorado pelo git;
 - oito linhas sintéticas em `data/placeholder.jsonl` para o loader ter um arquivo real;
 - três conjuntos versionados em `data/eval/`, com cartão e validação estrita;
 - CI com lint e testes.
 
-Fora deste repositório, por enquanto: CLI, relatório em JSON ou Markdown e execução contra API. O placeholder não é um conjunto de avaliação. Os conjuntos ficam em `data/eval/`.
+Fora da suíte: chamada real a API. O CLI recusa provedor ao vivo sem `--allow-live`, modelo e chave, e a suíte não faz essa chamada. O placeholder não é um conjunto de avaliação. Os conjuntos ficam em `data/eval/`.
 
 ## Metodologia planejada
 
@@ -46,14 +48,14 @@ Definição operacional das métricas embutidas, sujeita a revisão se um estudo
 - `normalized_match`: NFKC, casefold e espaço colapsado; acento e pontuação permanecem; também 1 ou 0, não é substring;
 - `token_f1`: F1 do multiconjunto de tokens depois dessa normalização; os dois lados vazios valem 1;
 - `accuracy`: igualdade da string inteira com o rótulo, 1 ou 0. A comparação é a mesma de `exact_match`; o nome marca a tarefa de classe fechada. A acurácia do conjunto é a média dessas notas;
-- precisão e recall por classe, e `macro_f1`: calculados por `score_classification` sobre os gabaritos, as saídas e o conjunto fixo de rótulos. Cada classe do conjunto entra na macro, também quando não há exemplo dela. Sem caso no denominador, a taxa vale 0. Predição fora do conjunto não abre classe nova: entra como erro na acurácia e como falso negativo do gabarito. O runner grava a `accuracy` por exemplo. A tabela agregada fica para o relatório do PR3;
+- precisão e recall por classe, e `macro_f1`: calculados por `score_classification` sobre os gabaritos, as saídas e o conjunto fixo de rótulos. Cada classe do conjunto entra na macro, também quando não há exemplo dela. Sem caso no denominador, a taxa vale 0. Predição fora do conjunto não abre classe nova: entra como erro na acurácia e como falso negativo do gabarito. O runner grava a `accuracy` por exemplo. O relatório acrescenta precisão, recall e macro-F1 quando a execução inclui `accuracy`;
 - `json_field_accuracy`: fração dos campos do objeto gabarito com o mesmo valor JSON; campo extra no candidato não entra; `true` não equivale a `1`; `1` não equivale a `1.0`; texto que não é objeto vale 0.
 
 O fake tem três modos e não inventa texto. `echo` devolve a entrada. `lookup` devolve a tabela pelo id. `scripted` consome uma fita na ordem e não rebobina. Acabou o roteiro, a chamada falha.
 
 O adaptador `OpenAISystem` valida modelo e chave antes de importar o SDK. A importação ocorre na primeira chamada. Temperatura 0. O seed do manifesto ainda não é enviado na requisição. CI não instala o extra e não faz chamada real.
 
-Agregação no relatório (média, contagem de erro, tabela) fica para o PR3. Até lá, nota por exemplo existe na estrutura `RunResult` e não vira número publicado. `score_classification` devolve a conta do conjunto para quem quiser inspecionar um rótulo fechado sem esperar o relatório.
+O runner grava a nota por exemplo em `RunResult`. O CLI agrega a média por métrica e por tag. Exemplo sem nota fica de fora daquela média; se nenhum exemplo teve nota, a média é nula. Nota já gravada antes de um erro de métrica continua na média dessa métrica. O erro tira da média a métrica que falhou e as que não chegaram a rodar. `score_classification` segue sendo a conta do conjunto fechado e entra no relatório junto com a `accuracy`. Esses agregados, quando o sistema é fake, checam o encanamento. Este arquivo não os publica.
 
 ## Datasets de exemplo
 
@@ -134,12 +136,70 @@ print(carded.card.task_type)
 print(len(carded.dataset.examples))
 ```
 
+O contrato do CLI está em [docs/spec-pr3-cli.md](docs/spec-pr3-cli.md). Os comandos abaixo não são uma execução de modelo. A saída fica em `results/`, que o git ignora, e não é copiada para este arquivo.
+
+```bash
+uv run eval-harness run data/eval/qa_curta --system oracle --seed 0
+uv run eval-harness run data/eval/qa_curta --system echo --seed 0 --output results/qa-echo
+uv run eval-harness run data/eval/qa_curta --system scripted-noisy --seed 0 --output results/qa-noisy
+uv run eval-harness compare results/qa_curta/oracle/seed-0 results/qa-echo --output results/qa-compare
+```
+
+`run` lê um diretório com `card.json` e `examples.jsonl`. `--system` escolhe o fake: `oracle` devolve o gabarito, `echo` devolve a entrada, `scripted-noisy` monta uma fita a partir do gabarito, do índice e do seed. Um terço dos exemplos repete o gabarito, um terço altera o texto, um terço erra. O mesmo seed repete a fita. O padrão é `oracle`. `--seed` ganha de `EVAL_HARNESS_SEED`; sem os dois, o seed é 0. Sem `--output`, o diretório é `results/<conjunto>/<sistema>/seed-<n>/`.
+
+`--metric` pode repetir e substitui as métricas por exemplo do cartão. `macro_f1` e `per_class_precision_recall` não entram aí: são agregados e aparecem na seção de classificação quando a execução inclui `accuracy`.
+
+`compare` usa o primeiro diretório como base. O delta é o outro valor menos o da base, por métrica e por tag. Hash de dataset diferente termina com código 2 e não grava arquivo. `--force` compara mesmo assim. Sem `--output`, o Markdown sai no stdout; com `--output`, o diretório recebe `comparison.md` e `comparison.json`.
+
+`openai` só segue com `--allow-live` e com `OPENAI_MODEL` e `OPENAI_API_KEY` preenchidas no ambiente do processo. Sem isso o processo termina com código 2 e a mensagem diz que não houve requisição. O valor da chave não é impresso. A suíte não percorre esse caminho. O seed fica no manifesto e ainda não é enviado ao provedor.
+
+## Como ler o relatório
+
+`records.jsonl` tem um objeto por exemplo, na ordem do dataset. `output` é o texto devolvido, ou nulo se o sistema falhou. `error` é a primeira linha da exceção, ou nulo. `scores` só traz métricas que chegaram a rodar. `latency_ms` é o tempo da chamada do sistema e não entra no resumo: o relógio da chamada não precisa repetir.
+
+`summary.json` traz a média e a contagem de cada métrica, o mesmo recorte por tag, a contagem de erros e o manifesto. O manifesto repete o `RunManifest` e acrescenta `created_at`. Essa chave não aparece em outro lugar. Duas execuções com o mesmo dataset, o mesmo sistema, as mesmas métricas e o mesmo seed batem byte a byte nesse arquivo se `created_at` for ignorado. Média nula (`null` no JSON, `n/a` na tabela) significa que nenhum exemplo teve nota naquela métrica.
+
+`report.md` é a mesma conta numa tabela Markdown. A frase sobre sistema fake, quando aparece, lembra que o número verifica o encanamento.
+
+## Como plugar um sistema ou uma métrica
+
+O CLI conhece os três fakes e o adaptador `openai`. Sistema ou métrica nova entra pela biblioteca, não por um caminho de módulo: o processo não importa código arbitrário a partir do argumento.
+
+Um sistema é um callable. Recebe `Example` e devolve `SystemOutput`. `name` e `params` são opcionais e entram no manifesto. `params` não pode usar nome de segredo (`api_key`, `token` e equivalentes). O valor recusado não volta na mensagem.
+
+```python
+from eval_harness import Example, SystemOutput, run_eval
+
+
+class ReferenceSystem:
+    name = "referencia"
+    params = {"mode": "reference"}
+
+    def __call__(self, example: Example) -> SystemOutput:
+        return SystemOutput(output=example.expected)
+```
+
+Uma métrica é um objeto com `name` e `score(example, output) -> float` finito. A ordem da lista é a ordem do manifesto. Exceção numa métrica interrompe as seguintes daquele exemplo e fica registrada; as notas já gravadas permanecem.
+
+```python
+from eval_harness import Example
+
+
+class ContainsExpected:
+    name = "contains_expected"
+
+    def score(self, example: Example, output: str) -> float:
+        return 1.0 if example.expected in output else 0.0
+```
+
+`run_eval` recebe o dataset, o sistema, a lista de métricas e o seed. O CLI, por cima disso, grava o relatório.
+
 ## Roadmap
 
 - PR2, neste repositório: três conjuntos sintéticos versionados em `data/eval/`, com cartão e métricas de classificação.
-- PR3: CLI offline e relatórios (resumo JSON e tabela Markdown). A média e a macro-F1 ainda não viram relatório.
+- PR3, neste repositório: CLI offline, resumo JSON, tabela Markdown e comparação. A comparação recusa hash de dataset diferente.
 - PR4: execuções reais, com o seed aplicado ao provedor e o registro do que foi pedido.
 
 ## O que fica de fora
 
-A suíte não chama API. Este arquivo não traz tabela de modelo, custo ou latência de provedor. O fake não substitui essa tabela: a saída dele verifica o encanamento. Os conjuntos de exemplo descrevem gabarito e contagem, não uma execução. Números dos estudos irmãos continuam nos repositórios deles.
+A suíte não chama API. Este arquivo não traz tabela de modelo, custo ou latência de provedor. O fake não substitui essa tabela: a saída dele verifica o encanamento. Os conjuntos de exemplo descrevem gabarito e contagem, não uma execução. Os relatórios do CLI ficam em `results/` e não entram neste arquivo. Números dos estudos irmãos continuam nos repositórios deles.
