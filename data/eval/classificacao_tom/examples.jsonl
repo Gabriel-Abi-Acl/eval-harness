@@ -1,0 +1,18 @@
+{"id": "tom-01", "input": "A caneca nova é linda e resistente.", "expected": "positivo", "metadata": {"tags": {"difficulty": "fácil", "category": "produto"}}}
+{"id": "tom-02", "input": "A caneca chegou rachada.", "expected": "negativo", "metadata": {"tags": {"difficulty": "fácil", "category": "produto"}}}
+{"id": "tom-03", "input": "A caneca é de cerâmica branca.", "expected": "neutro", "metadata": {"tags": {"difficulty": "fácil", "category": "produto"}}}
+{"id": "tom-04", "input": "Uso a mochila todo dia e o zíper continua firme.", "expected": "positivo", "metadata": {"tags": {"difficulty": "médio", "category": "produto"}}}
+{"id": "tom-05", "input": "O caderno solta a capa depois de uma semana.", "expected": "negativo", "metadata": {"tags": {"difficulty": "médio", "category": "produto"}}}
+{"id": "tom-06", "input": "O produto é ok, nada demais.", "expected": "neutro", "metadata": {"tags": {"difficulty": "difícil", "category": "produto"}}}
+{"id": "tom-07", "input": "O pacote chegou antes do prazo.", "expected": "positivo", "metadata": {"tags": {"difficulty": "fácil", "category": "entrega"}}}
+{"id": "tom-08", "input": "O pacote atrasou duas semanas.", "expected": "negativo", "metadata": {"tags": {"difficulty": "fácil", "category": "entrega"}}}
+{"id": "tom-09", "input": "A entrega está prevista para terça.", "expected": "neutro", "metadata": {"tags": {"difficulty": "fácil", "category": "entrega"}}}
+{"id": "tom-10", "input": "Chegou no dia combinado e a caixa estava intacta.", "expected": "positivo", "metadata": {"tags": {"difficulty": "médio", "category": "entrega"}}}
+{"id": "tom-11", "input": "O código de rastreio tem doze dígitos.", "expected": "neutro", "metadata": {"tags": {"difficulty": "médio", "category": "entrega"}}}
+{"id": "tom-12", "input": "Chegou no prazo, só isso.", "expected": "neutro", "metadata": {"tags": {"difficulty": "difícil", "category": "entrega"}}}
+{"id": "tom-13", "input": "A atendente resolveu o problema na hora.", "expected": "positivo", "metadata": {"tags": {"difficulty": "fácil", "category": "atendimento"}}}
+{"id": "tom-14", "input": "Ninguém respondeu o chamado.", "expected": "negativo", "metadata": {"tags": {"difficulty": "fácil", "category": "atendimento"}}}
+{"id": "tom-15", "input": "A loja abre às nove.", "expected": "neutro", "metadata": {"tags": {"difficulty": "fácil", "category": "atendimento"}}}
+{"id": "tom-16", "input": "Explicaram a troca com calma e sem pressa.", "expected": "positivo", "metadata": {"tags": {"difficulty": "médio", "category": "atendimento"}}}
+{"id": "tom-17", "input": "Transferiram a ligação três vezes sem resposta.", "expected": "negativo", "metadata": {"tags": {"difficulty": "médio", "category": "atendimento"}}}
+{"id": "tom-18", "input": "Funciona, mas eu esperava mais.", "expected": "negativo", "metadata": {"tags": {"difficulty": "difícil", "category": "atendimento"}}}

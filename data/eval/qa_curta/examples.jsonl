@@ -1,0 +1,18 @@
+{"id": "qa-01", "input": "Em que continente fica o Brasil?", "expected": "América do Sul", "metadata": {"tags": {"difficulty": "fácil", "category": "geografia"}}}
+{"id": "qa-02", "input": "Qual é a capital de Portugal?", "expected": "Lisboa", "metadata": {"tags": {"difficulty": "fácil", "category": "geografia"}}}
+{"id": "qa-03", "input": "Qual rio atravessa Paris?", "expected": "Sena", "metadata": {"tags": {"difficulty": "médio", "category": "geografia"}}}
+{"id": "qa-04", "input": "Qual país tem a capital Nairóbi?", "expected": "Quênia", "metadata": {"tags": {"difficulty": "difícil", "category": "geografia"}}}
+{"id": "qa-05", "input": "Quanto é 9 + 8?", "expected": "17", "metadata": {"tags": {"difficulty": "fácil", "category": "aritmética"}}}
+{"id": "qa-06", "input": "Quanto é 10 - 3?", "expected": "7", "metadata": {"tags": {"difficulty": "fácil", "category": "aritmética"}}}
+{"id": "qa-07", "input": "Quanto é 6 vezes 7?", "expected": "42", "metadata": {"tags": {"difficulty": "médio", "category": "aritmética"}}}
+{"id": "qa-08", "input": "Quanto é 15% de 200?", "expected": "30", "metadata": {"tags": {"difficulty": "difícil", "category": "aritmética"}}}
+{"id": "qa-09", "input": "Qual é o satélite natural da Terra?", "expected": "Lua", "metadata": {"tags": {"difficulty": "fácil", "category": "ciências"}}}
+{"id": "qa-10", "input": "Qual planeta fica mais perto do Sol?", "expected": "Mercúrio", "metadata": {"tags": {"difficulty": "fácil", "category": "ciências"}}}
+{"id": "qa-11", "input": "Qual gás as plantas absorvem na fotossíntese?", "expected": "dióxido de carbono", "metadata": {"tags": {"difficulty": "médio", "category": "ciências"}}}
+{"id": "qa-12", "input": "Qual é o número atômico do carbono?", "expected": "6", "metadata": {"tags": {"difficulty": "difícil", "category": "ciências"}}}
+{"id": "qa-13", "input": "Qual é o plural de cão?", "expected": "cães", "metadata": {"tags": {"difficulty": "fácil", "category": "língua"}}}
+{"id": "qa-14", "input": "Qual é o antônimo de rápido?", "expected": "lento", "metadata": {"tags": {"difficulty": "médio", "category": "língua"}}}
+{"id": "qa-15", "input": "Quantas letras tem a palavra piano?", "expected": "5", "metadata": {"tags": {"difficulty": "difícil", "category": "língua"}}}
+{"id": "qa-16", "input": "Quantas horas tem um dia?", "expected": "24", "metadata": {"tags": {"difficulty": "fácil", "category": "tempo"}}}
+{"id": "qa-17", "input": "Quantos minutos tem uma hora?", "expected": "60", "metadata": {"tags": {"difficulty": "médio", "category": "tempo"}}}
+{"id": "qa-18", "input": "Em um ano bissexto, quantos dias tem fevereiro?", "expected": "29", "metadata": {"tags": {"difficulty": "difícil", "category": "tempo"}}}

@@ -1,0 +1,18 @@
+{"id": "ped-01", "input": "Preciso de 2 cadernos.", "expected": "{\"produto\": \"caderno\", \"quantidade\": 2, \"urgente\": false}", "metadata": {"tags": {"difficulty": "fácil", "category": "papelaria"}}}
+{"id": "ped-02", "input": "Manda 1 caneta urgente.", "expected": "{\"produto\": \"caneta\", \"quantidade\": 1, \"urgente\": true}", "metadata": {"tags": {"difficulty": "fácil", "category": "papelaria"}}}
+{"id": "ped-03", "input": "Quero três borrachas.", "expected": "{\"produto\": \"borracha\", \"quantidade\": 3, \"urgente\": false}", "metadata": {"tags": {"difficulty": "médio", "category": "papelaria"}}}
+{"id": "ped-04", "input": "Separa 4 lápis para hoje.", "expected": "{\"produto\": \"lápis\", \"quantidade\": 4, \"urgente\": true}", "metadata": {"tags": {"difficulty": "médio", "category": "papelaria"}}}
+{"id": "ped-05", "input": "Quando puder, deixa 2 apontadores; se for para hoje, melhor.", "expected": "{\"produto\": \"apontador\", \"quantidade\": 2, \"urgente\": true}", "metadata": {"tags": {"difficulty": "difícil", "category": "papelaria"}}}
+{"id": "ped-06", "input": "Adiciona 5 clipes.", "expected": "{\"produto\": \"clipe\", \"quantidade\": 5, \"urgente\": false}", "metadata": {"tags": {"difficulty": "fácil", "category": "papelaria"}}}
+{"id": "ped-07", "input": "Coloca 6 maçãs.", "expected": "{\"produto\": \"maçã\", \"quantidade\": 6, \"urgente\": false}", "metadata": {"tags": {"difficulty": "fácil", "category": "mercado"}}}
+{"id": "ped-08", "input": "Preciso de 2 litros de leite urgente.", "expected": "{\"produto\": \"leite\", \"quantidade\": 2, \"urgente\": true}", "metadata": {"tags": {"difficulty": "fácil", "category": "mercado"}}}
+{"id": "ped-09", "input": "Leva quatro pães.", "expected": "{\"produto\": \"pão\", \"quantidade\": 4, \"urgente\": false}", "metadata": {"tags": {"difficulty": "médio", "category": "mercado"}}}
+{"id": "ped-10", "input": "Manda 3 pacotes de arroz o quanto antes.", "expected": "{\"produto\": \"arroz\", \"quantidade\": 3, \"urgente\": true}", "metadata": {"tags": {"difficulty": "médio", "category": "mercado"}}}
+{"id": "ped-11", "input": "Se tiver, separa dois queijos; amanhã serve.", "expected": "{\"produto\": \"queijo\", \"quantidade\": 2, \"urgente\": false}", "metadata": {"tags": {"difficulty": "difícil", "category": "mercado"}}}
+{"id": "ped-12", "input": "Quero 1 café.", "expected": "{\"produto\": \"café\", \"quantidade\": 1, \"urgente\": false}", "metadata": {"tags": {"difficulty": "fácil", "category": "mercado"}}}
+{"id": "ped-13", "input": "Preciso de 1 termômetro.", "expected": "{\"produto\": \"termômetro\", \"quantidade\": 1, \"urgente\": false}", "metadata": {"tags": {"difficulty": "fácil", "category": "farmácia"}}}
+{"id": "ped-14", "input": "Entrega 2 sabonetes para hoje.", "expected": "{\"produto\": \"sabonete\", \"quantidade\": 2, \"urgente\": true}", "metadata": {"tags": {"difficulty": "fácil", "category": "farmácia"}}}
+{"id": "ped-15", "input": "Separa três gazes.", "expected": "{\"produto\": \"gaze\", \"quantidade\": 3, \"urgente\": false}", "metadata": {"tags": {"difficulty": "médio", "category": "farmácia"}}}
+{"id": "ped-16", "input": "Manda 1 álcool urgente.", "expected": "{\"produto\": \"álcool\", \"quantidade\": 1, \"urgente\": true}", "metadata": {"tags": {"difficulty": "médio", "category": "farmácia"}}}
+{"id": "ped-17", "input": "Pode deixar quatro bandagens; não é urgente.", "expected": "{\"produto\": \"bandagem\", \"quantidade\": 4, \"urgente\": false}", "metadata": {"tags": {"difficulty": "difícil", "category": "farmácia"}}}
+{"id": "ped-18", "input": "Adiciona 6 algodões.", "expected": "{\"produto\": \"algodão\", \"quantidade\": 6, \"urgente\": false}", "metadata": {"tags": {"difficulty": "fácil", "category": "farmácia"}}}

@@ -1,0 +1,30 @@
+{
+  "schema": "eval_harness.dataset_card.v1",
+  "name": "Extração de pedido sintética",
+  "version": "1.0.0",
+  "task_type": "json_field_extraction",
+  "metrics": [
+    "json_field_accuracy"
+  ],
+  "license_note": "Textos sintéticos escritos para este repositório. Não há trecho de terceiros. Uso livre, sem atribuição obrigatória.",
+  "construction_notes": "Pedidos inventados, sem log real. A referência é JSON com as chaves produto, quantidade e urgente, nessa ordem, com espaço depois dos separadores. produto é o substantivo singular em minúsculas, sem artigo e sem unidade (litro, pacote). quantidade é o inteiro do pedido, mesmo quando o texto escreve o número por extenso. urgente é true só com uma destas pistas de pressa: urgente, urgência, para hoje, o quanto antes. 'amanhã' não conta. 'não é urgente' fica false. Há um único autor.",
+  "language": "pt-BR",
+  "tag_schema": {
+    "difficulty": [
+      "fácil",
+      "médio",
+      "difícil"
+    ],
+    "category": [
+      "papelaria",
+      "mercado",
+      "farmácia"
+    ]
+  },
+  "example_count": 18,
+  "fields": {
+    "produto": "string",
+    "quantidade": "integer",
+    "urgente": "boolean"
+  }
+}
