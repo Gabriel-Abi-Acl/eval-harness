@@ -1,0 +1,32 @@
+{
+  "schema": "eval_harness.dataset_card.v1",
+  "name": "Classificação de tom sintética",
+  "version": "1.0.0",
+  "task_type": "classification",
+  "metrics": [
+    "accuracy",
+    "per_class_precision_recall",
+    "macro_f1"
+  ],
+  "license_note": "Textos sintéticos escritos para este repositório. Não há trecho de terceiros. Uso livre, sem atribuição obrigatória.",
+  "construction_notes": "Frases curtas inventadas para este repositório, sem comentário de cliente real. O rótulo é o tom do texto inteiro, no conjunto positivo, negativo ou neutro, escolhido por um único autor. Três itens de dificuldade difícil estão na fronteira: 'O produto é ok, nada demais.' é neutro; 'Chegou no prazo, só isso.' é neutro; 'Funciona, mas eu esperava mais.' é negativo. Não houve segundo anotador.",
+  "language": "pt-BR",
+  "tag_schema": {
+    "difficulty": [
+      "fácil",
+      "médio",
+      "difícil"
+    ],
+    "category": [
+      "produto",
+      "entrega",
+      "atendimento"
+    ]
+  },
+  "example_count": 18,
+  "label_set": [
+    "positivo",
+    "negativo",
+    "neutro"
+  ]
+}

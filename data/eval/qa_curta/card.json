@@ -1,0 +1,29 @@
+{
+  "schema": "eval_harness.dataset_card.v1",
+  "name": "QA curta sintética",
+  "version": "1.0.0",
+  "task_type": "short_answer_qa",
+  "metrics": [
+    "exact_match",
+    "normalized_match",
+    "token_f1"
+  ],
+  "license_note": "Textos sintéticos escritos para este repositório. Não há trecho de terceiros. Uso livre, sem atribuição obrigatória.",
+  "construction_notes": "Escrito à mão para este repositório. Não foi amostrado de modelo, não foi traduzido de benchmark e não copia item de conjunto público. Cada pergunta tem uma string canônica de gabarito. Acento e pontuação fazem parte dessa string. Sinônimo não foi listado. Há um único autor e não houve segunda anotação.",
+  "language": "pt-BR",
+  "tag_schema": {
+    "difficulty": [
+      "fácil",
+      "médio",
+      "difícil"
+    ],
+    "category": [
+      "geografia",
+      "aritmética",
+      "ciências",
+      "língua",
+      "tempo"
+    ]
+  },
+  "example_count": 18
+}
