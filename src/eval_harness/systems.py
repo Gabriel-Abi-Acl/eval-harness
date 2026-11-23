@@ -2,15 +2,17 @@
 
 O protocolo é um callable: devolve texto e, se houver, uso de tokens. O fake não
 sorteia texto e não preenche token quando o chamador não passou `usage`.
+oracle, echo e scripted-noisy só montam esse fake para o CLI.
 """
 
 from __future__ import annotations
 
+import json
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 from typing import Any, Protocol
 
-from eval_harness.dataset import Example
+from eval_harness.dataset import Dataset, Example
 
 
 class FakeScriptError(LookupError):
@@ -111,6 +113,86 @@ def _string_table(table: Mapping[str, str]) -> dict[str, str]:
             raise ValueError("lookup table keys and values must be strings")
         copied[key] = value
     return copied
+
+
+def build_fake_system(spec: str, dataset: Dataset, *, seed: int) -> FakeSystem:
+    """Oracle, eco ou fita barulhenta. Os três são determinísticos.
+
+    A fita consome o seed: outro seed muda a saída, o mesmo seed repete.
+    Nenhum modo chama provedor nem inventa texto fora dessa regra.
+    """
+    _require_seed(seed)
+    if spec == "oracle":
+        table = {example.id: example.expected for example in dataset.examples}
+        return FakeSystem("lookup", table=table, name="oracle")
+    if spec == "echo":
+        return FakeSystem("echo", name="echo")
+    if spec == "scripted-noisy":
+        script = [
+            _noisy_text(example.expected, index, seed)
+            for index, example in enumerate(dataset.examples)
+        ]
+        return FakeSystem("scripted", script=script, name="scripted-noisy")
+    raise ValueError(f"unknown fake system: {spec}")
+
+
+def _require_seed(seed: int) -> None:
+    if isinstance(seed, bool) or not isinstance(seed, int) or seed < 0:
+        raise ValueError("seed must be zero or a positive integer")
+
+
+def _noisy_text(expected: str, index: int, seed: int) -> str:
+    # Um terço repete o gabarito, um terço altera, um terço erra. A regra não sorteia.
+    slot = (index + seed) % 3
+    if slot == 0:
+        return expected
+    if slot == 1:
+        return _partial_text(expected)
+    return _miss_text(expected)
+
+
+def _partial_text(expected: str) -> str:
+    payload = _json_object(expected)
+    if payload:
+        key = next(reversed(payload))
+        payload[key] = _wrong_json_value(payload[key])
+        return json.dumps(payload, ensure_ascii=False, separators=(", ", ": "))
+    parts = expected.split(" ")
+    if len(parts) > 1:
+        return " ".join(parts[:-1])
+    return f"{expected} extra"
+
+
+def _miss_text(expected: str) -> str:
+    if _json_object(expected) is not None:
+        return "{}"
+    if expected != "incorreto":
+        return "incorreto"
+    return "outro"
+
+
+def _json_object(text: str) -> dict[str, Any] | None:
+    try:
+        payload = json.loads(text)
+    except json.JSONDecodeError:
+        return None
+    if isinstance(payload, dict):
+        return payload
+    return None
+
+
+def _wrong_json_value(value: Any) -> Any:
+    if isinstance(value, bool):
+        return not value
+    if isinstance(value, int):
+        return value + 1
+    if isinstance(value, str):
+        return f"{value}-x" if value else "x"
+    if isinstance(value, float):
+        return value + 1.0
+    if value is None:
+        return False
+    return "x"
 
 
 def _string_script(script: Sequence[str]) -> tuple[str, ...]:

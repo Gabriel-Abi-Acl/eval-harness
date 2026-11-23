@@ -1,10 +1,13 @@
 [project]
 name = "eval-harness"
 version = "0.1.0"
-description = "Harness offline para avaliar sistemas com LLM: dataset, métricas e manifesto reproduzível."
+description = "Harness offline para avaliar sistemas com LLM: dataset, métricas, manifesto e relatório reproduzível."
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = []
+
+[project.scripts]
+eval-harness = "eval_harness.cli:main"
 
 [project.optional-dependencies]
 openai = ["openai>=1.40"]
